@@ -16,9 +16,9 @@
           - curl 
           - vim 
           - iputils-ping
-          - openjdk-8-jdk
-          - openjdk-8-jdk-headless
-          - openjdk-8-jre
+          - openjdk-11-jdk
+          - openjdk-11-jdk-headless
+          - openjdk-11-jre
   
     - name: install docker-compose
       get_url:
@@ -36,4 +36,4 @@
 
     - name: install logstash using remote .deb
       apt:
-       deb: https://artifacts.elastic.co/downloads/logstash/logstash-7.6.2.deb
+       deb:  https://artifacts.elastic.co/downloads/logstash/logstash-7.12.1-amd64.deb

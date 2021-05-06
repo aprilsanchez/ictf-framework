@@ -1,18 +1,11 @@
-wheel
-requests
-awscli
 boto3
 coloredlogs
 ipaddress
 ipython
-python-vagrant
-PyYAML
-requests
-ansible
 appdirs
 botocore
 chardet
-Cheetah
+Cheetah3
 colorama
 configobj
 decorator
@@ -52,4 +45,4 @@ simplegeneric
 urllib3
 virtualenv
 zope.interface
-python-logstash
+python3-logstash

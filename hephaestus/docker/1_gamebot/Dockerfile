@@ -1,12 +1,12 @@
 FROM ictf_base
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python-pip
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3-pip
 
 COPY ./gamebot /opt/ictf/gamebot
 
 WORKDIR /opt/ictf/gamebot
 
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 RUN chmod +x ./start.sh 
 
