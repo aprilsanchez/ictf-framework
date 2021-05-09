@@ -27,6 +27,13 @@
       fail:
         msg: "database requires ICTF_API_SECRET to be set"
       when: ICTF_API_SECRET is not defined
+
+    - name: Create Linux user
+      user: 
+        name=linux_user
+        create_home=yes
+        password="{{ ICTF_MYSQL_DATABASE_PASSWORD }}"
+        state=present
           
     - name: secrets directory permissions
       file:
@@ -44,11 +51,11 @@
       service: name=mysql state=started
     
     - name: mysql - create ictf user
-      user:
+      mysql_user:
         name=ictf
         password="{{ ICTF_MYSQL_DATABASE_PASSWORD }}"
-        # host=localhost
-        # priv=ictf.*:ALL
+        host=localhost
+        priv=ictf.*:ALL
     
     - name: mysql - create ictf database
       mysql_db:
