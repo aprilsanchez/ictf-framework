@@ -32,7 +32,6 @@
       user: 
         name=linux_user
         create_home=yes
-        password="{{ ICTF_MYSQL_DATABASE_PASSWORD }}"
         state=present
           
     - name: secrets directory permissions

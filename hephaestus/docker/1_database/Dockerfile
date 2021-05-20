@@ -1,7 +1,6 @@
 FROM ictf_base
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nginx uwsgi uwsgi-plugin-python3 mysql-server python3-pip virtualenv python3-mysqldb python3-dev 
-RUN pip3 install --upgrade pyOpenSSL ndg-httpsclient pyasn1
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server nginx uwsgi uwsgi-plugin-python3 python3-pip virtualenv python3-mysqldb python3-dev python3-pymysql
 
 COPY ./database /opt/ictf/database
 COPY ./scoring_ictf /opt/ictf/scoring_ictf
@@ -10,4 +9,4 @@ WORKDIR /opt/ictf/database
 
 RUN chmod +x ./start.sh && ansible-playbook ./provisioning/hephaestus_provisioning/ansible-provisioning.yml
 
-ENTRYPOINT ./start.sh
+# ENTRYPOINT ./start.sh
