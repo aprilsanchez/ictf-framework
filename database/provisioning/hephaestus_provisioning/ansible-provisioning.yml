@@ -28,9 +28,9 @@
         msg: "database requires ICTF_API_SECRET to be set"
       when: ICTF_API_SECRET is not defined
 
-    - name: Create Linux user
+    - name: Create Linux user for mysql
       user: 
-        name=linux_user
+        name=mysql
         create_home=yes
         state=present
           
@@ -177,5 +177,3 @@
         src=./files/logstash.conf
         dest=/etc/logstash/conf.d/syslog.conf
         owner=root group=root mode="u=rw,g=r,o=r"
-    
-

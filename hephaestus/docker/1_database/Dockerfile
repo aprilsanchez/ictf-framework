@@ -1,7 +1,6 @@
 FROM ictf_base
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server nginx uwsgi uwsgi-plugin-python3 python3-pip virtualenv python3-mysqldb python3-dev python3-pymysql
-
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip virtualenv python3-mysqldb python3-dev python3-pymysql mysql-server
 COPY ./database /opt/ictf/database
 COPY ./scoring_ictf /opt/ictf/scoring_ictf
 
