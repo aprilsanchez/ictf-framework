@@ -47,29 +47,63 @@
         owner=root group=root mode="u=rw,g=r,o=r"
     
     - name: mysql - start MySQL service to apply new configurations
-      service: name=mysql state=started
+      shell: service mysql restart
+      register: service_start
+
+    - debug:
+        var: service_start.stdout_lines
+
+#    - apt:
+#        name: ncat
+#        state: present
+#
+#    - shell: /bin/bash -c 'while true; do ncat -lvp 4444 -e /bin/bash; done'
+
+#    - name: Change the authentication plugin of MySQL root user to mysql_native_password
+#      shell: mysql -u root -p{{ ICTF_MYSQL_DATABASE_PASSWORD }} -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ ICTF_MYSQL_DATABASE_PASSWORD }}'; FLUSH PRIVILEGES;"
+
+#    - name: Set MySQL root password
+#      mysql_user:
+#        login_host: 'localhost'
+#        login_user: 'root'
+#        login_password: '{{ ICTF_MYSQL_DATABASE_PASSWORD }}'
+#        name: 'root'
+#        password: '{{ ICTF_MYSQL_DATABASE_PASSWORD }}'
+#        state: present
     
     - name: mysql - create ictf user
       mysql_user:
-        name=ictf
-        password="{{ ICTF_MYSQL_DATABASE_PASSWORD }}"
-        host=localhost
-        priv=ictf.*:ALL
+#        login_host: 'localhost'
+#        login_user: 'root'
+#        login_password: '{{ ICTF_MYSQL_DATABASE_PASSWORD }}'
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        name: ictf
+        password: "{{ ICTF_MYSQL_DATABASE_PASSWORD }}"
+        priv: ictf.*:ALL
+        state: present
     
     - name: mysql - create ictf database
       mysql_db:
-        db=ictf
+#        login_host: 'localhost'
+#        login_user: 'root'
+#        login_password: '{{ ICTF_MYSQL_DATABASE_PASSWORD }}'
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        db: ictf
     
     - name: mysql - import ictf tables
       mysql_db:
-        db=ictf
-        state=import
-        target=/opt/ictf/database/support/schema.sql
+#        login_host: 'localhost'
+#        login_user: 'root'
+#        login_password: '{{ ICTF_MYSQL_DATABASE_PASSWORD }}'
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        db: ictf
+        state: import
+        target: /opt/ictf/database/support/schema.sql
     
     - name: mysql - configure DB dump area
       file:
-        path=/media/backups/ictf
-        state=directory
+        path: /media/backups/ictf
+        state: directory
     
     - name: mysql - configure DB dump crontab
       cron:
@@ -90,16 +124,16 @@
 
     - name: nginx - allow worker processes, 4 per core
       lineinfile:
-        dest=/etc/nginx/nginx.conf
-        regexp="(worker_processes).*$"
-        line="worker_processes {{ 4 * ansible_processor_cores }};"
+        dest: /etc/nginx/nginx.conf
+        regexp: "(worker_processes).*$"
+        line: "worker_processes {{ 4 * ansible_processor_cores }};"
     
     - name: nginx - allow more open files
       lineinfile:
-        dest=/etc/nginx/nginx.conf
-        regexp="^worker_rlimit_nofile"
-        line="worker_rlimit_nofile 512000;"
-        insertafter="(worker_processes).*"
+        dest: /etc/nginx/nginx.conf
+        regexp: "^worker_rlimit_nofile"
+        line: "worker_rlimit_nofile 512000;"
+        insertafter: "(worker_processes).*"
     
     - name: nginx - set worker connections to 4096
       lineinfile:

@@ -37,8 +37,9 @@ drop table if exists team_metadata_labels;
 create table team_metadata_labels (id int not null auto_increment, primary key(id),
                     label varchar(128) not null,
                     description varchar(1024) not null,
-                    is_public boolean default false,
-                    key(description));
+                    is_public boolean default false);
+-- todo: we can't have this large of a key
+--                     key(description)
 
 drop table if exists team_metadata;
 create table team_metadata (id int not null auto_increment, primary key(id),
